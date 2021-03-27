@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/components/customGridView.dart';
 
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_app/providers/listOfMovies.dart';
+import 'package:movie_app/providers/listOfTvs.dart';
+import 'package:movie_app/services/config.dart';
+import 'package:movie_app/services/networking.dart';
+
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   static String tag = 'Dashboard';
@@ -11,6 +17,15 @@ class Dashboard extends StatefulWidget {
 
 class _Dashboard extends State<Dashboard> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      callAPI(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +44,12 @@ class _Dashboard extends State<Dashboard> {
               color: Colors.yellow,
               size: 0.04 * MediaQuery.of(context).size.height,
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           )
         ],
       ),
+      body:
+          _currentIndex == 0 ? CustomGridView('Movies') : CustomGridView('Tvs'),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
@@ -74,4 +90,27 @@ class _Dashboard extends State<Dashboard> {
       ),
     );
   }
+}
+
+void callAPI(BuildContext context) async {
+  dynamic movies = await getMoviesData();
+  dynamic tvs = await getTvsData();
+
+  Provider.of<ListOfMovies>(context, listen: false)
+      .setMovieFromJson(movies['results']);
+  Provider.of<ListOfTvs>(context, listen: false).setTvFromJson(tvs['results']);
+}
+
+Future<dynamic> getMoviesData() async {
+  Networking networkHelper =
+      Networking(MovieAPI.host, MovieAPI.urlPopularMovieList, MovieAPI.key);
+  var moviesData = await networkHelper.getData();
+  return moviesData;
+}
+
+Future<dynamic> getTvsData() async {
+  Networking networkHelper =
+      Networking(MovieAPI.host, MovieAPI.urlPopularTvSeries, MovieAPI.key);
+  var tvsData = await networkHelper.getData();
+  return tvsData;
 }

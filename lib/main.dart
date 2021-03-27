@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/pages/dashboard.dart';
 import 'package:movie_app/pages/splashscreen.dart';
+import 'package:movie_app/providers/listOfMovies.dart';
+import 'package:movie_app/providers/listOfTvs.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,8 +19,18 @@ class MyApp extends StatelessWidget {
           return MaterialApp(home: SplashScreen());
         } else {
           // Loading is done, return the app:
-          return MaterialApp(
-            home: Dashboard(),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(
+                value: ListOfMovies(),
+              ),
+              ChangeNotifierProvider.value(
+                value: ListOfTvs(),
+              )
+            ],
+            child: MaterialApp(
+              home: Dashboard(),
+            ),
           );
         }
       },
