@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/Models/tv.dart';
+import 'package:movie_app/Models/movie_and_tv.dart';
 
 class ListOfTvs with ChangeNotifier {
-  List<Tv> _items = [];
-  List<Tv> get items => [..._items];
+  List<MovieAndTv> _items = [];
+  List<MovieAndTv> get items => [..._items];
 
   void setTvFromJson(listOfTvs) {
     for (var tv in listOfTvs) {
       _items.add(
-        Tv(
+        MovieAndTv(
           id: tv['id'],
           title: tv['original_name'],
           releaseDate: tv['first_air_date'],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/components/customGridView.dart';
+import 'package:movie_app/pages/favorite.dart';
 
 import 'package:movie_app/providers/listOfMovies.dart';
 import 'package:movie_app/providers/listOfTvs.dart';
@@ -44,7 +45,14 @@ class _Dashboard extends State<Dashboard> {
               color: Colors.yellow,
               size: 0.04 * MediaQuery.of(context).size.height,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Favorite(),
+                ),
+              );
+            },
           )
         ],
       ),

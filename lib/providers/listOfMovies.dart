@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/Models/movie.dart';
+import 'package:movie_app/Models/movie_and_tv.dart';
 
 class ListOfMovies with ChangeNotifier {
-  List<Movie> _items = [];
-  List<Movie> get items => [..._items];
+  List<MovieAndTv> _items = [];
+  List<MovieAndTv> get items => [..._items];
 
   void setMovieFromJson(listOfMovies) {
     for (var movie in listOfMovies) {
       _items.add(
-        Movie(
+        MovieAndTv(
           id: movie['id'],
           title: movie['original_title'],
           releaseDate: movie['release_date'],
@@ -28,5 +28,10 @@ class ListOfMovies with ChangeNotifier {
       );
     }
     notifyListeners();
+  }
+
+  set statusFavorite(int searchId) {
+    
+    this.notifyListeners();
   }
 }

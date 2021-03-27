@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/pages/dashboard.dart';
 import 'package:movie_app/pages/splashscreen.dart';
+import 'package:movie_app/providers/listOfFavorite.dart';
 import 'package:movie_app/providers/listOfMovies.dart';
 import 'package:movie_app/providers/listOfTvs.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
               ),
               ChangeNotifierProvider.value(
                 value: ListOfTvs(),
-              )
+              ),
+              ChangeNotifierProvider.value(
+                value: ListOfFavorite(),
+              ),
             ],
             child: MaterialApp(
               home: Dashboard(),

@@ -1,6 +1,6 @@
-class Movie {
+class MovieAndTv {
 
-  Movie({
+  MovieAndTv({
     this.id,
     this.title,
     this.releaseDate,
