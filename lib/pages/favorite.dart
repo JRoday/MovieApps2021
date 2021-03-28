@@ -9,6 +9,8 @@ class Favorite extends StatefulWidget {
 }
 
 class _Favorite extends State<Favorite> {
+  int counter = 1;
+  
   @override
   void initState() {
     super.initState();
@@ -32,11 +34,41 @@ class _Favorite extends State<Favorite> {
         backgroundColor: Color(0xffFFDB9E),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text(
-            'SortBy',
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'SortBy',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              DropdownButton(
+              value: counter,
+              items: [
+                DropdownMenuItem(
+                  child: Text("Name Title"),
+                  value: 1,
+                ),
+                DropdownMenuItem(
+                  child: Text("Genre"),
+                  value: 2,
+                ),
+                DropdownMenuItem(
+                  child: Text("Date"),
+                  value: 3
+                ),
+                DropdownMenuItem(
+                    child: Text("Score"),
+                    value: 4
+                )
+              ],
+              onChanged: (value) {
+                setState(() {
+                  counter = value;
+                });
+              }),
+            ],
           ),
         ),
         body: favoriteList.listSize > 0
