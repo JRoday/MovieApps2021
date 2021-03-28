@@ -19,6 +19,7 @@ class _Favorite extends State<Favorite> {
     ListOfFavorite favoriteList = Provider.of<ListOfFavorite>(context);
 
     return Scaffold(
+      backgroundColor: Color(0xffFFDB9E),
       appBar: AppBar(
         title: Text(
           'Favorite',
@@ -27,13 +28,23 @@ class _Favorite extends State<Favorite> {
           ),
         ),
       ),
-      body: favoriteList.listSize > 0
-          ? CustomGridView(
-              'Favorite',
-            )
-          : Text(
-              '',
+      body: Scaffold(
+        backgroundColor: Color(0xffFFDB9E),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'SortBy',
+            style: TextStyle(
+              fontSize: 20.0,
             ),
+          ),
+        ),
+        body: favoriteList.listSize > 0
+            ? CustomGridView('Favorite', () {})
+            : Text(
+                '',
+              ),
+      ),
     );
   }
 }

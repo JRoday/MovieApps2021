@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:movie_app/Models/movie_and_tv.dart';
 
 class ListOfFavorite with ChangeNotifier{
+  Color borderColor;
   List<MovieAndTv> favoriteList = [];
 
   void addToFavorite(MovieAndTv favoriteMovieOrTv)

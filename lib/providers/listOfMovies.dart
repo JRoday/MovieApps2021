@@ -6,6 +6,7 @@ class ListOfMovies with ChangeNotifier {
   List<MovieAndTv> get items => [..._items];
 
   void setMovieFromJson(listOfMovies) {
+    _items = [];
     for (var movie in listOfMovies) {
       _items.add(
         MovieAndTv(
@@ -17,21 +18,16 @@ class ListOfMovies with ChangeNotifier {
           score: movie['vote_average']
               .toDouble(), // use toDouble because some vote_averages are in INT
           genre: movie['genre_ids'],
-          scoreInWord: movie['vote_average'] > 7
+          scoreInWord: movie['vote_average'] >= 8
               ? 'A'
-              : movie['vote_average'] > 5
+              : movie['vote_average'] >= 6
                   ? 'B'
-                  : movie['vote_average'] > 3
+                  : movie['vote_average'] >= 4
                       ? 'C'
                       : 'D',
         ),
       );
     }
     notifyListeners();
-  }
-
-  set statusFavorite(int searchId) {
-    
-    this.notifyListeners();
   }
 }

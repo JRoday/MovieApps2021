@@ -4,6 +4,8 @@ import 'package:movie_app/pages/favorite.dart';
 
 import 'package:movie_app/providers/listOfMovies.dart';
 import 'package:movie_app/providers/listOfTvs.dart';
+import 'package:movie_app/providers/movieGenres.dart';
+import 'package:movie_app/providers/tvGenres.dart';
 import 'package:movie_app/services/config.dart';
 import 'package:movie_app/services/networking.dart';
 
@@ -17,6 +19,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
+  final GlobalKey<RefreshIndicatorState> refreshKey =
+      new GlobalKey<RefreshIndicatorState>();
   int _currentIndex = 0;
 
   @override
@@ -24,13 +28,14 @@ class _Dashboard extends State<Dashboard> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      callAPI(context);
+      callAPI(); // This method specific for movie and tv lists,for refresh calling
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFFDB9E),
       appBar: AppBar(
         title: Text(
           'Dashboard',
@@ -56,8 +61,9 @@ class _Dashboard extends State<Dashboard> {
           )
         ],
       ),
-      body:
-          _currentIndex == 0 ? CustomGridView('Movies') : CustomGridView('Tvs'),
+      body: _currentIndex == 0
+          ? CustomGridView('Movies', callAPI)
+          : CustomGridView('Tvs', callAPI),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
@@ -98,27 +104,48 @@ class _Dashboard extends State<Dashboard> {
       ),
     );
   }
-}
 
-void callAPI(BuildContext context) async {
-  dynamic movies = await getMoviesData();
-  dynamic tvs = await getTvsData();
+  void callAPI() async {
+    dynamic movies = await getMoviesData();
+    dynamic tvs = await getTvsData();
+    dynamic movieGenres = await getMovieGenresData();
+    dynamic tvGenres = await getTvGenresData();
 
-  Provider.of<ListOfMovies>(context, listen: false)
-      .setMovieFromJson(movies['results']);
-  Provider.of<ListOfTvs>(context, listen: false).setTvFromJson(tvs['results']);
-}
+    Provider.of<ListOfMovies>(context, listen: false)
+        .setMovieFromJson(movies['results']);
+    Provider.of<ListOfTvs>(context, listen: false)
+        .setTvFromJson(tvs['results']);
+    Provider.of<MovieGenres>(context, listen: false)
+        .setMovieGenresFromJson(movieGenres['genres']);
+    Provider.of<TvGenres>(context, listen: false)
+        .setTvGenresFromJson(tvGenres['genres']);
+  }
 
-Future<dynamic> getMoviesData() async {
-  Networking networkHelper =
-      Networking(MovieAPI.host, MovieAPI.urlPopularMovieList, MovieAPI.key);
-  var moviesData = await networkHelper.getData();
-  return moviesData;
-}
+  Future<dynamic> getMoviesData() async {
+    Networking networkHelper =
+        Networking(MovieAPI.host, MovieAPI.urlPopularMovieList, MovieAPI.key);
+    var moviesData = await networkHelper.getData();
+    return moviesData;
+  }
 
-Future<dynamic> getTvsData() async {
-  Networking networkHelper =
-      Networking(MovieAPI.host, MovieAPI.urlPopularTvSeries, MovieAPI.key);
-  var tvsData = await networkHelper.getData();
-  return tvsData;
+  Future<dynamic> getTvsData() async {
+    Networking networkHelper =
+        Networking(MovieAPI.host, MovieAPI.urlPopularTvSeries, MovieAPI.key);
+    var tvsData = await networkHelper.getData();
+    return tvsData;
+  }
+
+  Future<dynamic> getMovieGenresData() async {
+    Networking networkHelper =
+        Networking(MovieAPI.host, MovieAPI.urlMovieGenres, MovieAPI.key);
+    var movieGenresData = await networkHelper.getData();
+    return movieGenresData;
+  }
+
+  Future<dynamic> getTvGenresData() async {
+    Networking networkHelper =
+        Networking(MovieAPI.host, MovieAPI.urlTvGenres, MovieAPI.key);
+    var tvGenresData = await networkHelper.getData();
+    return tvGenresData;
+  }
 }

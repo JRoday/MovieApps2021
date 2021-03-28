@@ -4,6 +4,8 @@ import 'package:movie_app/pages/splashscreen.dart';
 import 'package:movie_app/providers/listOfFavorite.dart';
 import 'package:movie_app/providers/listOfMovies.dart';
 import 'package:movie_app/providers/listOfTvs.dart';
+import 'package:movie_app/providers/movieGenres.dart';
+import 'package:movie_app/providers/tvGenres.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -30,6 +32,12 @@ class MyApp extends StatelessWidget {
               ),
               ChangeNotifierProvider.value(
                 value: ListOfFavorite(),
+              ),
+              ChangeNotifierProvider.value(
+                value: MovieGenres(),
+              ),
+              ChangeNotifierProvider.value(
+                value: TvGenres(),
               ),
             ],
             child: MaterialApp(

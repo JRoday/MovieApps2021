@@ -6,6 +6,7 @@ class ListOfTvs with ChangeNotifier {
   List<MovieAndTv> get items => [..._items];
 
   void setTvFromJson(listOfTvs) {
+    _items = [];
     for (var tv in listOfTvs) {
       _items.add(
         MovieAndTv(
@@ -17,11 +18,11 @@ class ListOfTvs with ChangeNotifier {
           score: tv['vote_average']
               .toDouble(), // use toDouble because some vote_averages are in INT
           genre: tv['genre_ids'],
-          scoreInWord: tv['vote_average'] > 7
+          scoreInWord: tv['vote_average'] >= 8
               ? 'A'
-              : tv['vote_average'] > 5
+              : tv['vote_average'] >= 6
                   ? 'B'
-                  : tv['vote_average'] > 3
+                  : tv['vote_average'] >= 4
                       ? 'C'
                       : 'D',
         ),

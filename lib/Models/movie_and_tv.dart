@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class MovieAndTv {
 
   MovieAndTv({
@@ -9,10 +11,12 @@ class MovieAndTv {
     this.score,
     this.genre,
     this.scoreInWord,
+    this.borderColor,
   });
 
   int id;
   String title, releaseDate, overview, imagePath, scoreInWord;
   double score;
   List genre;
+  Color borderColor;
 }
